@@ -1,30 +1,14 @@
+from readdata import read_data
+from printing import print_comparison
+
 # Column names and column indices to read
-columns = {'date': 0, 'time': 1, 'tempout': 2, 'windspeed': 7}
+columns = {'date': 0, 'time': 1, 'tempout': 2, 'windspeed': 7,
+           'windchill': 12}
 
 # Data types for each column (only if non-string)
-types = {'tempout': float, 'windspeed': float}
+types = {'tempout': float, 'windspeed': float, 'windchill': float}
 
-# Initialize my data variable
-data = {}
-for column in columns:
-   data[column] = []
-
-# Read and parse the data file
-filename = "data/wxobs20170821.txt"
-with open(filename, 'r') as datafile:
-
-   # Read the first three lines (header)
-   for _ in range(3):
-      datafile.readline()
-
-   # Read and parse the rest of the file
-   for line in datafile:
-      split_line = line.split()
-      for column in columns:
-         i = columns[column]
-         t = types.get(column, str) # avoiding key-not-found errors and defaulting to str if unspecified
-         value = t(split_line[i])
-         data[column].append(value)
+data = read_data(columns, types=types)
 
 # DEBUG
 print(data['tempout'])
@@ -38,8 +22,8 @@ def compute_windchill(t, v):
 	d = 0.4275
 
 	v2 = v ** 2
-    wci = a + (b * t) - (c * v2) + (d * t * v2)
-    return wci
+	wci = a + (b * t) - (c * v2) + (d * t * v2)
+	return wci
 
 
 # Compute the wind chill factor
@@ -47,3 +31,7 @@ windchill = []
 	# zip function in Python to automatically unravel the tuples
 for temp, windspeed in zip(data['tempout'], data['windspeed']):
 	windchill.append(compute_windchill(temp, windspeed))
+
+
+# Output comparison of data
+print_comparison('WINDCHILL', data['date'], data['time'], data['windchill'], windchill)
