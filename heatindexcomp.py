@@ -32,10 +32,7 @@ data = read_data(columns, types=types)
 # >6 right justified and take up 6 spaces
 # 9.6f fill 9 spaces with 6 of them being after the decimal point
 
-heatindex = []
-
-for temp, hum in zip(data['tempout'], data['humout']):
-   heatindex.append(compute_heatindex(temp, hum))
+heatindex = [compute_heatindex(t, h) in zip(data['tempout'], data['humout'])]
 
 
 # Output comparison of data

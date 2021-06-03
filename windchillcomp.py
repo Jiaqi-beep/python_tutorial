@@ -16,10 +16,8 @@ print(data['tempout'])
 
 
 # Compute the wind chill factor
-windchill = []
-	# zip function in Python to automatically unravel the tuples
-for temp, windspeed in zip(data['tempout'], data['windspeed']):
-	windchill.append(compute_windchill(temp, windspeed))
+windchill = [compute_windchill(t, w) in zip(data['tempout'], data['windspeed'])]
+# zip function in Python to automatically unravel the tuples
 
 
 # Output comparison of data
